@@ -56,9 +56,9 @@ Contents of this page: [Requirements](#requirements) · [Installation](#installa
 - Columns: pivot at bottom center, place on grid intersections. Beams: pivot at the bottom flange center, length along X.
 - Door and window frames: copy the host wall transform exactly (same pivot). Window sill 110 cm. Door openings 120x250 and 300x300.
   The roller shutter (108 cm wide) fits the 120 cm door opening.
-- Kick plates face local -Y; place them against a wall face (wall center line +/- 10 cm).
+- Kick plates face local +Y (pivot on the back face); place them against a wall face (wall center line +/- 10 cm).
 - Catwalk pieces: pivot at the walking surface center so they line up with the top of the stair at Z = 200.
-  SM_TB_Stair_Steel_W100_H200 rises 200 cm in ten 20 cm steps, pivot at the footprint bottom center, top step at +Y.
+  SM_TB_Stair_Steel_W100_H200 rises 200 cm in ten 20 cm steps, pivot at the footprint bottom center, top step at local -Y (bottom step at +Y).
 - Pipes (10 cm diameter) are modeled vertical (along +Z). Straight pipes and fittings pivot at the center of the bottom mouth (facing -Z).
   The other mouths sit on 10 cm offsets (elbow: +10 X / +10 Z, facing +X; tee: -10 X and +10 X at +10 Z), so pipe runs snap on a 10 cm grid. Rotate pieces to run pipes horizontally.
 - UV0 uses world-scale box mapping (concrete 1 tile = 200 cm, steel 100 cm, caution stripes 50 cm), so textures continue across neighboring pieces.
