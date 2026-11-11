@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio-Standard Modular Training Bay - Documentation</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#1d2228}
+h1{border-bottom:3px solid #e0a400;padding-bottom:.3rem}h2{margin-top:2.2rem;border-bottom:1px solid #ddd}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .3rem}pre{padding:.8rem;overflow:auto}
+table{border-collapse:collapse;font-size:.9rem;width:100%}th,td{border:1px solid #d5d8dc;padding:.3rem .5rem;text-align:left}th{background:#f0f2f4}a{color:#0b62a3}</style></head>
+<body>
+<h1 id="studio-standard-modular-training-bay">Studio-Standard Modular Training Bay</h1>
+<p><strong>Unreal Engine content pack - public documentation</strong></p>
+<p>Publisher: <strong>Haishan</strong> · Author: Christon Chan · Support: <a href="mailto:Chanjc03@gmail.com">Chanjc03@gmail.com</a></p>
+<p>A modular kit of 80 static meshes for building enclosed industrial training bays, workshops and service interiors in Unreal Engine: walls, floors, ceilings, columns, beams, door and window frames, catwalks, stairs, railings, trims, pipes and props, with custom collision, lightmap UVs, two master materials, a demo map and an overview map.</p>
+<p>Contents of this page: <a href="#requirements">Requirements</a> · <a href="#installation">Installation</a> · <a href="#quick-start">Quick start</a> · <a href="#what-is-included">What is included</a> · <a href="#grid-and-pivot-rules">Grid and pivot rules</a> · <a href="#collision-and-lightmaps">Collision and lightmaps</a> · <a href="#materials">Materials</a> · <a href="#lighting">Lighting</a> · <a href="#engine-version-support">Engine version support</a> · <a href="#known-limitations">Known limitations</a> · <a href="#mesh-list">Mesh list</a> · <a href="#license-and-provenance">License and provenance</a> · <a href="#ai-disclosure">AI disclosure</a> · <a href="#support">Support</a></p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Unreal Engine 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7 or 5.8 (each version opened and checked).</li>
+<li>Content only: no plugins, no code, no Blueprints. Works in Blueprint and C++ projects.</li>
+<li>Development platform tested: Windows. The content is not platform specific.</li>
+<li>Lumen (the UE5 default) is recommended for the demo maps.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<ol>
+<li>Open the product page on Fab and add the pack to your library.</li>
+<li>In the Epic Games Launcher (Unreal Engine &gt; Library &gt; Fab Library) or the Fab plugin inside the editor, choose <strong>Add to Project</strong> and pick a project with a supported engine version.</li>
+<li>The pack is added to your project as <code>Content/ModularTrainingBay</code> (<code>/Game/ModularTrainingBay</code>). No restart or plugin setup is needed.</li>
+<li>Recommended editor settings while building: grid snap 100 (50 for trims), rotation snap 90 degrees.</li>
+</ol>
+<h2 id="quick-start">Quick start</h2>
+<ol>
+<li>Open <code>/Game/ModularTrainingBay/Maps/L_TB_Overview</code> to browse every mesh, laid out by category with labels.</li>
+<li>Open <code>/Game/ModularTrainingBay/Maps/L_TB_Demo</code> to see an enclosed, fully roofed training bay assembled only from the kit, with firing lanes, a mezzanine catwalk and stairs, lockers, consoles, pipe runs and three adjoining rooms (corridor, equipment room, control room).</li>
+<li>Drag meshes from <code>/Game/ModularTrainingBay/Meshes</code> into your level and snap them using the rules below. Swap looks by assigning another <code>MI_TB_*</code> instance or a child instance of <code>M_TB_Master</code>.</li>
+</ol>
+<h2 id="what-is-included">What is included</h2>
+<ul>
+<li>80 Static Meshes under /Game/ModularTrainingBay/Meshes (Openings 7, Pipes 6, Props 12, Structure/Beams 4, Structure/Ceilings 3, Structure/Columns 3, Structure/Floors 5, Structure/Walls 20, Trims 7, Utilities 2, Walkways 11).</li>
+<li>2 master materials (M_TB_Master opaque, M_TB_Glass_Master translucent) and 14 material instances (MI_TB_*).</li>
+<li>36 textures (12 sets x BaseColor _D, packed _ARM, DirectX normal _N), 1024x1024.</li>
+<li>2 maps: L_TB_Demo (an enclosed, fully roofed training bay with three adjoining rooms seen through the doors and windows) and L_TB_Overview (every mesh laid out by category with labels).</li>
+</ul>
+<h3 id="folder-structure">Folder structure</h3>
+<pre><code>/Game/ModularTrainingBay/
+  Docs/       README.txt (this documentation as plain text)
+  Maps/       L_TB_Demo, L_TB_Overview
+  Materials/  M_TB_Master, M_TB_Glass_Master, MI_TB_*
+  Meshes/     Structure/(Walls, Floors, Ceilings, Columns, Beams), Openings, Trims, Walkways, Utilities, Pipes, Props
+  Textures/   Kit, Props
+</code></pre>
+<h2 id="grid-and-pivot-rules">Grid and pivot rules</h2>
+<ul>
+<li>Units: centimeters, Z up. Grid: 100 / 200 / 400 cm. Story height: 400 cm. Set the editor grid snap to 100 (or 50 for trims).</li>
+<li>Walls: 20 cm thick, centered on the grid line, length along X, pivot at bottom center. Place at Z = 0.</li>
+<li>Outer corners: add SM_TB_Wall_CornerPost_20x20_H400 at the grid intersection. T-junctions need no extra piece.</li>
+<li>Floors: 20 cm thick, pivot at bottom center. Place at Z = -20 so the top surface is the walking surface (Z = 0).</li>
+<li>Ceiling decks: pivot at bottom center, place at Z = 380.</li>
+<li>Columns: pivot at bottom center, place on grid intersections. Beams: pivot at the bottom flange center, length along X.</li>
+<li>Door and window frames: copy the host wall transform exactly (same pivot). Window sill 110 cm. Door openings 120x250 and 300x300.
+  The roller shutter (108 cm wide) fits the 120 cm door opening.</li>
+<li>Kick plates face local -Y; place them against a wall face (wall center line +/- 10 cm).</li>
+<li>Catwalk pieces: pivot at the walking surface center so they line up with the top of the stair at Z = 200.
+  SM_TB_Stair_Steel_W100_H200 rises 200 cm in ten 20 cm steps, pivot at the footprint bottom center, top step at +Y.</li>
+<li>Pipes (10 cm diameter) are modeled vertical (along +Z). Straight pipes and fittings pivot at the center of the bottom mouth (facing -Z).
+  The other mouths sit on 10 cm offsets (elbow: +10 X / +10 Z, facing +X; tee: -10 X and +10 X at +10 Z), so pipe runs snap on a 10 cm grid. Rotate pieces to run pipes horizontally.</li>
+<li>UV0 uses world-scale box mapping (concrete 1 tile = 200 cm, steel 100 cm, caution stripes 50 cm), so textures continue across neighboring pieces.</li>
+</ul>
+<p>Example: an 8 m x 8 m room is four <code>SM_TB_Floor_Concrete_400x400</code> at Z = -20 (centers at 200 / 600 on X and Y), <code>SM_TB_Wall_*_W400_H400</code> pieces centered on the grid lines at Z = 0, <code>SM_TB_Wall_CornerPost_20x20_H400</code> at the outer corners and four <code>SM_TB_Ceiling_Deck_400x400</code> at Z = 380.</p>
+<h2 id="collision-and-lightmaps">Collision and lightmaps</h2>
+<ul>
+<li>Every mesh has custom UCX convex collision (1 to 7 hulls). Use the Player Collision view (Alt+C) in the editor viewport to inspect it.</li>
+<li><code>SM_TB_Decal_FloorLane</code> has a thin collision box; it is set to NoCollision in the demo map.</li>
+<li>Light Map Coordinate Index is 1 on every mesh. UV channel 1 is generated by Unreal from UV 0 (Generate Lightmap UVs), with minimum lightmap resolutions of 64 to 256 depending on size. Lightmap UVs were checked for overlapping and out-of-range texels on all 80 meshes in every supported engine version (none found).</li>
+<li>LOD0 only; Nanite is disabled on all meshes and can be enabled per mesh by the user (the console glass slot is translucent).</li>
+</ul>
+<h2 id="materials">Materials</h2>
+<ul>
+<li><code>M_TB_Master</code> (opaque) and <code>M_TB_Glass_Master</code> (translucent), 14 material instances <code>MI_TB_*</code>.</li>
+<li>ARM texture: R = ambient occlusion, G = roughness, B = metallic. Normal maps are DirectX (green down).</li>
+<li>Parameters: <code>BaseTint</code>, <code>RoughnessScale</code>; glass: <code>Color</code>, <code>Opacity</code>, <code>Roughness</code>, <code>Metallic</code>, <code>EmissiveColor</code>, <code>EmissiveStrength</code>.</li>
+<li>UV0 uses world-scale box mapping (concrete 1 tile = 200 cm, steel 100 cm, caution stripes 50 cm), so textures continue across neighboring pieces.</li>
+</ul>
+<h2 id="lighting">Lighting</h2>
+<ul>
+<li>The maps use movable lights only: Directional Light, Sky Light (real-time capture), Sky Atmosphere, Exponential Height Fog and Rect Lights.</li>
+<li>Force No Precomputed Lighting is enabled, so no lighting build is required.</li>
+<li>The maps are set up for Lumen global illumination and reflections (UE5 defaults). Without Lumen the interior looks darker.</li>
+</ul>
+<h2 id="engine-version-support">Engine version support</h2>
+<table>
+<thead>
+<tr>
+<th>Engine version</th>
+<th>Opened and checked</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.0</td>
+<td>Yes</td>
+<td>80 meshes, collision and materials present; both maps load with 0 missing meshes; 0 errors, 0 warnings</td>
+</tr>
+<tr>
+<td>5.1</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.2</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.3</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.4</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.5</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.6</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.7</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>5.8</td>
+<td>Yes</td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<p>Versions not listed have not been tested.</p>
+<h2 id="known-limitations">Known limitations</h2>
+<ul>
+<li>LOD0 only (no additional LODs). Triangle counts are 12 to 6,372 per mesh, 38,958 in total.</li>
+<li>Nanite is not enabled by default.</li>
+<li>Textures are 1024x1024.</li>
+<li>The demo maps rely on dynamic lighting (Lumen recommended).</li>
+<li>This is an environment kit, not a gameplay template: no Blueprints, no code, no characters, no animations, no audio.</li>
+</ul>
+<h2 id="mesh-list">Mesh list</h2>
+<table>
+<thead>
+<tr>
+<th>Mesh</th>
+<th>Folder</th>
+<th>Size (cm)</th>
+<th>Triangles</th>
+<th>Collision hulls</th>
+<th>Lightmap res</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SM_TB_DoorFrame_Steel_W120_H250</td>
+<td>Openings</td>
+<td>136x24x259</td>
+<td>291</td>
+<td>6</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_DoorFrame_Steel_W300_H300</td>
+<td>Openings</td>
+<td>316x24x309</td>
+<td>291</td>
+<td>6</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_DoorFrame_Steel_W80_H210</td>
+<td>Openings</td>
+<td>92x24x217</td>
+<td>291</td>
+<td>6</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Door_Rollershutter_W108_H240</td>
+<td>Openings</td>
+<td>108x30x240</td>
+<td>552</td>
+<td>1</td>
+<td>128</td>
+<td>Derived from Poly Haven 'rollershutter_door' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_WindowFrame_Steel_Obs_W80_H200</td>
+<td>Openings</td>
+<td>90x24x212</td>
+<td>507</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_WindowFrame_Steel_W140_H100</td>
+<td>Openings</td>
+<td>152x24x114</td>
+<td>551</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_WindowFrame_Steel_W300_H100</td>
+<td>Openings</td>
+<td>312x24x114</td>
+<td>551</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_Bracket_A</td>
+<td>Pipes</td>
+<td>11.1x15.6x3.2</td>
+<td>278</td>
+<td>1</td>
+<td>32</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_Elbow90</td>
+<td>Pipes</td>
+<td>15.3x10.5x15.3</td>
+<td>864</td>
+<td>2</td>
+<td>32</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_L100</td>
+<td>Pipes</td>
+<td>10x10x100</td>
+<td>144</td>
+<td>1</td>
+<td>64</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_L200</td>
+<td>Pipes</td>
+<td>10x10x200</td>
+<td>288</td>
+<td>1</td>
+<td>128</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_Tee</td>
+<td>Pipes</td>
+<td>20x10x15</td>
+<td>300</td>
+<td>3</td>
+<td>32</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Pipe_D10_Valve_A</td>
+<td>Pipes</td>
+<td>15.1x25.3x40</td>
+<td>4910</td>
+<td>1</td>
+<td>32</td>
+<td>Derived from Poly Haven 'modular_pipes' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Decal_FloorLane</td>
+<td>Props</td>
+<td>200x20x0.3</td>
+<td>12</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_Barrel_A</td>
+<td>Props</td>
+<td>63.4x63.9x93</td>
+<td>1473</td>
+<td>1</td>
+<td>64</td>
+<td>Derived from Poly Haven 'barrel_03' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_Bench</td>
+<td>Props</td>
+<td>150x40x45</td>
+<td>408</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_Console</td>
+<td>Props</td>
+<td>126x60x108.3</td>
+<td>512</td>
+<td>2</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_ElectricalCabinet_A</td>
+<td>Props</td>
+<td>52x43.2x112</td>
+<td>4404</td>
+<td>1</td>
+<td>64</td>
+<td>Derived from Poly Haven 'utility_box_01' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_GearRack</td>
+<td>Props</td>
+<td>102x43x181</td>
+<td>490</td>
+<td>2</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_Locker</td>
+<td>Props</td>
+<td>94x56x190</td>
+<td>916</td>
+<td>2</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_MetalRack_A</td>
+<td>Props</td>
+<td>91.5x60x190</td>
+<td>6372</td>
+<td>1</td>
+<td>128</td>
+<td>Derived from Poly Haven 'worn_metal_rack' (CC0)</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_NumberPlate</td>
+<td>Props</td>
+<td>30x2.4x20</td>
+<td>455</td>
+<td>1</td>
+<td>32</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_Stool</td>
+<td>Props</td>
+<td>32x32x46</td>
+<td>460</td>
+<td>1</td>
+<td>32</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_TargetPlate</td>
+<td>Props</td>
+<td>56x6x80</td>
+<td>250</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Prop_TargetStand</td>
+<td>Props</td>
+<td>70x44x160</td>
+<td>400</td>
+<td>3</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Beam_SteelChannel_L200</td>
+<td>Structure/Beams</td>
+<td>200x20x30</td>
+<td>60</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Beam_SteelI_L100</td>
+<td>Structure/Beams</td>
+<td>100x20x30</td>
+<td>60</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Beam_SteelI_L200</td>
+<td>Structure/Beams</td>
+<td>200x20x30</td>
+<td>60</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Beam_SteelI_L400</td>
+<td>Structure/Beams</td>
+<td>400x20x30</td>
+<td>60</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Ceiling_Deck_100x100</td>
+<td>Structure/Ceilings</td>
+<td>100x100x20</td>
+<td>68</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Ceiling_Deck_200x200</td>
+<td>Structure/Ceilings</td>
+<td>200x200x20</td>
+<td>116</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Ceiling_Deck_400x400</td>
+<td>Structure/Ceilings</td>
+<td>400x400x20</td>
+<td>212</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Column_Concrete_40x40_H400</td>
+<td>Structure/Columns</td>
+<td>43.1x43.1x400</td>
+<td>396</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Column_Concrete_T_H400</td>
+<td>Structure/Columns</td>
+<td>47.1x34.2x400</td>
+<td>440</td>
+<td>2</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Column_SteelH_30_H400</td>
+<td>Structure/Columns</td>
+<td>50x50x400</td>
+<td>108</td>
+<td>2</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Floor_Concrete_100x100</td>
+<td>Structure/Floors</td>
+<td>100x100x20.5</td>
+<td>36</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Floor_Concrete_200x200</td>
+<td>Structure/Floors</td>
+<td>200x200x20.5</td>
+<td>36</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Floor_Concrete_400x400</td>
+<td>Structure/Floors</td>
+<td>400x400x20.5</td>
+<td>36</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Floor_Concrete_SafetyEdge_200x200</td>
+<td>Structure/Floors</td>
+<td>200x200x20</td>
+<td>20</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Floor_DiamondPlate_200x200</td>
+<td>Structure/Floors</td>
+<td>200x200x20</td>
+<td>20</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Cladding_W200_H400</td>
+<td>Structure/Walls</td>
+<td>200x23.1x400</td>
+<td>324</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Cladding_W400_H400</td>
+<td>Structure/Walls</td>
+<td>400x23.1x400</td>
+<td>516</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_ConcretePanel_W400_H400</td>
+<td>Structure/Walls</td>
+<td>400x23.1x400</td>
+<td>276</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_DoorLarge_W400_H400</td>
+<td>Structure/Walls</td>
+<td>400x23.1x400</td>
+<td>204</td>
+<td>3</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_Door_W100_H400</td>
+<td>Structure/Walls</td>
+<td>100x23.1x400</td>
+<td>156</td>
+<td>3</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_Door_W200_H400</td>
+<td>Structure/Walls</td>
+<td>200x23.1x400</td>
+<td>204</td>
+<td>3</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_ObsWindow_W200_H400</td>
+<td>Structure/Walls</td>
+<td>200x23.1x400</td>
+<td>192</td>
+<td>4</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W100_H200</td>
+<td>Structure/Walls</td>
+<td>100x23.1x200</td>
+<td>228</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W100_H400</td>
+<td>Structure/Walls</td>
+<td>100x23.1x400</td>
+<td>228</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W200_H200</td>
+<td>Structure/Walls</td>
+<td>200x23.1x200</td>
+<td>252</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W200_H400</td>
+<td>Structure/Walls</td>
+<td>200x23.1x400</td>
+<td>252</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W400_H200</td>
+<td>Structure/Walls</td>
+<td>400x23.1x200</td>
+<td>252</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_W400_H400</td>
+<td>Structure/Walls</td>
+<td>400x23.1x400</td>
+<td>252</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_Window_W200_H400</td>
+<td>Structure/Walls</td>
+<td>200x23.1x400</td>
+<td>192</td>
+<td>4</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Concrete_Window_W400_H400</td>
+<td>Structure/Walls</td>
+<td>400x23.1x400</td>
+<td>240</td>
+<td>4</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_CornerPost_20x20_H400</td>
+<td>Structure/Walls</td>
+<td>20x23.1x400</td>
+<td>84</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_EndCap_20_H200</td>
+<td>Structure/Walls</td>
+<td>6.9x22.8x200</td>
+<td>308</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_EndCap_20_H400</td>
+<td>Structure/Walls</td>
+<td>6.9x22.8x400</td>
+<td>308</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_InnerCorner_L100_H400</td>
+<td>Structure/Walls</td>
+<td>111.2x111.2x400</td>
+<td>216</td>
+<td>2</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Wall_Low_W200_H100</td>
+<td>Structure/Walls</td>
+<td>200x23.1x100</td>
+<td>752</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_CornerGuard_H120</td>
+<td>Trims</td>
+<td>13x13.6x120</td>
+<td>68</td>
+<td>2</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_FloorJoint_L200</td>
+<td>Trims</td>
+<td>200x6x0.9</td>
+<td>24</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_KickPlate_Caution_L100</td>
+<td>Trims</td>
+<td>100x1.5x15</td>
+<td>20</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_KickPlate_Caution_L200</td>
+<td>Trims</td>
+<td>200x1.5x15</td>
+<td>20</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_KickPlate_Caution_L400</td>
+<td>Trims</td>
+<td>400x1.5x15</td>
+<td>20</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_KickPlate_CornerIn</td>
+<td>Trims</td>
+<td>15.6x15.6x15</td>
+<td>68</td>
+<td>2</td>
+<td>32</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Trim_KickPlate_CornerOut</td>
+<td>Trims</td>
+<td>16.5x16.5x15</td>
+<td>68</td>
+<td>2</td>
+<td>32</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Utility_CableTray_L200</td>
+<td>Utilities</td>
+<td>200x40x10</td>
+<td>528</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Utility_LightChannel_L200</td>
+<td>Utilities</td>
+<td>200x20x8</td>
+<td>112</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Catwalk_Corner_L_W100</td>
+<td>Walkways</td>
+<td>151x150.7x123</td>
+<td>805</td>
+<td>6</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Catwalk_End_W100</td>
+<td>Walkways</td>
+<td>52.5x101x123</td>
+<td>556</td>
+<td>4</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Catwalk_Straight_W100_L200</td>
+<td>Walkways</td>
+<td>200x101x123</td>
+<td>404</td>
+<td>3</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Catwalk_T_W100</td>
+<td>Walkways</td>
+<td>200x150.5x123</td>
+<td>915</td>
+<td>7</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Railing_End_L100</td>
+<td>Walkways</td>
+<td>100x5x105</td>
+<td>152</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Railing_Post_H100</td>
+<td>Walkways</td>
+<td>12x12x105</td>
+<td>124</td>
+<td>1</td>
+<td>64</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Railing_Steel_L200</td>
+<td>Walkways</td>
+<td>200x5x105</td>
+<td>132</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Ramp_Concrete_W200_L400_H100</td>
+<td>Walkways</td>
+<td>200x404x128</td>
+<td>96</td>
+<td>1</td>
+<td>256</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Stair_Landing_200x200</td>
+<td>Walkways</td>
+<td>200x200x18</td>
+<td>308</td>
+<td>1</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Stair_Landing_Corner_200x200</td>
+<td>Walkways</td>
+<td>200x200x18.2</td>
+<td>568</td>
+<td>2</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+<tr>
+<td>SM_TB_Stair_Steel_W100_H200</td>
+<td>Walkways</td>
+<td>102x304.7x301.5</td>
+<td>836</td>
+<td>3</td>
+<td>128</td>
+<td>Original geometry</td>
+</tr>
+</tbody>
+</table>
+<h2 id="license-and-provenance">License and provenance</h2>
+<p>The pack is licensed to buyers under the Fab End User License Agreement and the license tier purchased on Fab.</p>
+<p><strong>Original content.</strong> 70 of the 80 meshes are original geometry made for this pack, together with their modular layout, collision, naming and documentation.</p>
+<p><strong>Public domain (CC0) content.</strong> The pack also contains public domain content released under CC0 1.0 Universal (https://creativecommons.org/publicdomain/zero/1.0/). CC0 content is free for anyone to use; it is <strong>not</strong> original work of the publisher and is not presented as such. All 12 texture sets are derived from CC0 textures, and 10 meshes are derived from CC0 models. Five prop texture sets (PipeMetal, RollerShutter, MetalRack, Barrel, ElectricalCabinet) were reworked: only the source UV layout and form detail (normal and ambient occlusion) were kept, with new paint colors, edge wear, scratches, grime, roughness and metallic maps, a micro-normal layer and stencil markings. They remain CC0-derived. Source licenses: Poly Haven https://polyhaven.com/license , ambientCG https://docs.ambientcg.com/license/ .</p>
+<h3 id="meshes-derived-from-cc0-models-10-of-80-meshes">Meshes derived from CC0 models (10 of 80 meshes)</h3>
+<p>Changes made: isolated from the source scene, transforms applied, re-pivoted to snap points (pipe fittings pivot at the pipe mouth on a 10 cm grid), renamed, custom UCX collision added, lightmap UVs generated in Unreal (channel 1, checked for no overlaps), materials remapped to this pack's material instances.</p>
+<ul>
+<li>SM_TB_Pipe_D10_L100, _L200, _Elbow90, _Tee, _Valve_A, _Bracket_A: Poly Haven "modular_pipes" by Kuutti Siitonen, CC0 1.0 - https://polyhaven.com/a/modular_pipes</li>
+<li>SM_TB_Door_Rollershutter_W108_H240: Poly Haven "rollershutter_door" by MP, CC0 1.0 - https://polyhaven.com/a/rollershutter_door</li>
+<li>SM_TB_Prop_MetalRack_A: Poly Haven "worn_metal_rack" by Luca B, CC0 1.0 - https://polyhaven.com/a/worn_metal_rack</li>
+<li>SM_TB_Prop_Barrel_A: Poly Haven "barrel_03" by Serhii Khromov, CC0 1.0 - https://polyhaven.com/a/barrel_03</li>
+<li>SM_TB_Prop_ElectricalCabinet_A: Poly Haven "utility_box_01" by James Ray Cock, CC0 1.0 - https://polyhaven.com/a/utility_box_01</li>
+</ul>
+<h3 id="textures-derived-from-cc0-textures-all-12-texture-sets-36-textures">Textures derived from CC0 textures (all 12 texture sets / 36 textures)</h3>
+<ul>
+<li>T_TB_ConcreteWall_D/_ARM/_N: Poly Haven "garage_floor" by Jenelle van Heerden, CC0 1.0 - https://polyhaven.com/a/garage_floor (Resized to 1K, desaturated, cooled, contrast adjusted, ARM packed, DirectX normal)</li>
+<li>T_TB_ConcreteFloor_D/_ARM/_N: Poly Haven "hangar_concrete_floor" by Dimitrios Savva, CC0 1.0 - https://polyhaven.com/a/hangar_concrete_floor (Resized to 1K, brightened, desaturated, ARM packed, DirectX normal)</li>
+<li>T_TB_SteelOxidized_D/_ARM/_N: ambientCG "MetalPlates013" by ambientCG, CC0 1.0 - https://ambientcg.com/a/MetalPlates013 (Resized to 1K, AO/Roughness/Metallic packed to ARM, slight color shift)</li>
+<li>T_TB_SteelCladding_D/_ARM/_N: ambientCG "CorrugatedSteel007A" by ambientCG, CC0 1.0 - https://ambientcg.com/a/CorrugatedSteel007A (Resized to 1K, recolored to galvanized grey, ARM packed)</li>
+<li>T_TB_DiamondPlate_D/_ARM/_N: ambientCG "DiamondPlate008A" by ambientCG, CC0 1.0 - https://ambientcg.com/a/DiamondPlate008A (Resized to 1K, ARM packed)</li>
+<li>T_TB_SafetyYellow_D/_ARM/_N: ambientCG "PaintedMetal009" by ambientCG, CC0 1.0 - https://ambientcg.com/a/PaintedMetal009 (Resized to 1K, ARM packed)</li>
+<li>T_TB_CautionStripe_D/_ARM/_N: Poly Haven "metal_plate_02" by Rob Tuytel, CC0 1.0 - https://polyhaven.com/a/metal_plate_02 (Stripe pattern is original (script-generated); CC0 texture used only for grime/normal modulation)</li>
+<li>T_TB_PipeMetal_D/_ARM/_N: Poly Haven "modular_pipes" by Kuutti Siitonen, CC0 1.0 - https://polyhaven.com/a/modular_pipes (Reworked set derived from the CC0 1K maps: kept only the source UV layout and form detail (normal and ambient occlusion); new process-green paint with safety-yellow valve wheels and white pipe bands every 50 cm, new edge wear, scratches, height-based grime, newly authored roughness and metallic maps and an added micro-normal layer; normal converted to DirectX)</li>
+<li>T_TB_RollerShutter_D/_ARM/_N: Poly Haven "rollershutter_door" by MP, CC0 1.0 - https://polyhaven.com/a/rollershutter_door (Reworked set derived from the CC0 1K maps: kept only the source UV layout and form detail (normal and ambient occlusion); new slate blue-grey paint, yellow/black hazard band at the bottom, "BAY 02 / KEEP CLEAR" stencil, vertical rain streaks, new edge wear, scratches, height-based grime, newly authored roughness and metallic maps and an added micro-normal layer; normal converted to DirectX)</li>
+<li>T_TB_MetalRack_D/_ARM/_N: Poly Haven "worn_metal_rack" by Luca B, CC0 1.0 - https://polyhaven.com/a/worn_metal_rack (Reworked set derived from the CC0 1K maps: kept only the source UV layout and form detail (normal and ambient occlusion); new orange uprights and dark blue-grey shelves, "MAX 150 KG / PER SHELF" stencils on the shelf fronts, new edge wear, scratches, height-based grime, newly authored roughness and metallic maps and an added micro-normal layer; normal converted to DirectX)</li>
+<li>T_TB_Barrel_D/_ARM/_N: Poly Haven "barrel_03" by Serhii Khromov, CC0 1.0 - https://polyhaven.com/a/barrel_03 (Reworked set derived from the CC0 1K maps: kept only the source UV layout and form detail (normal and ambient occlusion); new amber drum body with graphite lids, white label band with "TB-200L / NON-POTABLE" stencil, new edge wear, scratches, height-based grime, newly authored roughness and metallic maps and an added micro-normal layer; normal converted to DirectX)</li>
+<li>T_TB_ElectricalCabinet_D/_ARM/_N: Poly Haven "utility_box_01" by James Ray Cock, CC0 1.0 - https://polyhaven.com/a/utility_box_01 (Reworked set derived from the CC0 1K maps: kept only the source UV layout and form detail (normal and ambient occlusion); new olive-green enclosure, red accents replacing the yellow warning blocks, "TB-EP 04 / 400 V" stencil on the doors, new edge wear, scratches, height-based grime, newly authored roughness and metallic maps and an added micro-normal layer; normal converted to DirectX)</li>
+</ul>
+<p><strong>Font.</strong> No font files are included. The stencil markings on four prop texture sets were rasterized from the Barlow Condensed font, used under the SIL Open Font License 1.1 (https://openfontlicense.org/).</p>
+<p>No other third-party software, audio, code or plugins are included. Engine content (Epic) is referenced only by the demo maps' lighting actors.</p>
+<h2 id="ai-disclosure">AI disclosure</h2>
+<p>This product is marked <strong>Created with AI</strong> on Fab. The 70 original meshes, the layout of the two maps and the new paint, wear and stencil layers of the five reworked prop texture sets were generated by procedural Blender, Unreal and Python scripts written with an AI assistant. No generative image, 3D-mesh or video models were used. All store images and the product video are real Unreal Engine renders of the included maps.</p>
+<h2 id="support">Support</h2>
+<ul>
+<li>Email: <a href="mailto:Chanjc03@gmail.com">Chanjc03@gmail.com</a> (publisher: Haishan). Please include your engine version and a screenshot if something looks wrong.</li>
+<li>The same documentation is included in the pack at <code>/Game/ModularTrainingBay/Docs/README.txt</code>.</li>
+</ul>
+</body></html>
